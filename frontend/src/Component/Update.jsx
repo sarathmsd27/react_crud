@@ -13,7 +13,7 @@ const Update = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8081/endpoint//employee/${id}`)
+      .get(`http://localhost:8081/endpoint/employee/${id}`)
       .then((res) => {
         
         setEmployee(res.data);
