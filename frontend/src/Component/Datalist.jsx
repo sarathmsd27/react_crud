@@ -7,14 +7,14 @@ const DataList = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8081/endpoint")
+      .get(`${process.env.REACT_APP_BACKEND_URL}/endpoint`)
       .then((res) => setData(res.data))
       .catch((err) => console.log(err));
   }, []);
 
   const handleDelete = (id) => {
     axios
-      .delete(`http://localhost:8081/endpoint/del-employee/${id}`)
+      .delete(`${process.env.REACT_APP_BACKEND_URL}/endpoint/del-employee/${id}`)
       .then((res) => {
         setData(data.filter((employee) => employee._id !== id));
         console.log("Employee deleted successfully");

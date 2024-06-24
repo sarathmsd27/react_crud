@@ -22,7 +22,7 @@ const AddData = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8081/endpoint/add-employee",
+        `${process.env.REACT_APP_BACKEND_URL}/endpoint/add-employee`,
         values
       );
       if(response){

@@ -13,7 +13,7 @@ const Update = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8081/endpoint/employee/${id}`)
+      .get(`${process.env.REACT_APP_BACKEND_URL}/endpoint/employee/${id}`)
       .then((res) => {
         
         setEmployee(res.data);
@@ -38,7 +38,7 @@ const Update = () => {
     e.preventDefault();
 
     axios
-      .put(`http://localhost:8081/endpoint/update-employee/${id}`, formData)
+      .put(`${process.env.REACT_APP_BACKEND_URL}/endpoint/update-employee/${id}`, formData)
       .then((res) => {
         if(res){
             setFormData({
