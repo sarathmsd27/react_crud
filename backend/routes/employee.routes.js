@@ -1,70 +1,62 @@
-const express =require("express");
-const app=express();
+const express = require("express");
+const app = express();
 
 const employeeRoute = express.Router();
 let EmployeeSchema = require("../model/employee.model");
 
-employeeRoute.route("/").get((req,res)=>{
-    EmployeeSchema.find((error,data)=>{
-        if(error){
-            return next(error)
-        }else{
-            res.json(data)
-        }
-    })
-})
-
-employeeRoute.route("/employee/:id").get((req,res)=>{
-    EmployeeSchema.findById(req.params.id,(error,data)=>{
-        if(error){
-            return next(error)
-        }
-        else{
-            res.json(data)
-        }
-    })
+// Get all employees
+employeeRoute.route("/").get(async (req, res, next) => {
+  try {
+    const data = await EmployeeSchema.find();
+    res.json(data);
+  } catch (error) {
+    next(error);
+  }
 });
 
+// Get employee by ID
+employeeRoute.route("/employee/:id").get(async (req, res, next) => {
+  try {
+    const data = await EmployeeSchema.findById(req.params.id);
+    res.json(data);
+  } catch (error) {
+    next(error);
+  }
+});
 
+// Add new employee
+employeeRoute.route("/add-employee").post(async (req, res, next) => {
+  try {
+    const data = await EmployeeSchema.create(req.body);
+    res.json(data);
+  } catch (error) {
+    next(error);
+  }
+});
 
-employeeRoute.route("/add-employee").post((req,res,next)=>{
-    EmployeeSchema.create(req.body,(error,data)=>{
-        if(error){
-            return next(error)
-        }
-        else{
-            res.json(data)
-        }
-    })
-})
+// Delete employee
+employeeRoute.route("/del-employee/:id").delete(async (req, res, next) => {
+  try {
+    const data = await EmployeeSchema.findByIdAndRemove(req.params.id);
+    res.json(data);
+  } catch (error) {
+    next(error);
+  }
+});
 
-//delete method
-
-employeeRoute.route("/del-employee/:id").delete((req,res)=>{
-    EmployeeSchema.findByIdAndRemove(req.params.id,(error,data)=>{
-        if(error){
-            return next(error)
-        }
-        else{
-            res.json(data)
-        }
-    })
-})
-
-//update method
-
-employeeRoute.route("/update-employee/:id").put((req,res)=>{
-    EmployeeSchema.findByIdAndUpdate(req.params.id,{$set:req.body},
-        (error,data)=>{
-        if(error){
-            return next(error)
-        }
-        else{
-            res.json(data);
-            console.log("updated successfully")
-        }
-    })
-})
-
+// Update employee
+employeeRoute.route("/update-employee/:id").put(async (req, res, next) => {
+  try {
+    const data = await EmployeeSchema.findByIdAndUpdate(
+      req.params.id,
+      { $set: req.body },
+      { new: true }
+    );
+    res.json(data);
+    console.log("updated successfully");
+  } catch (error) {
+    next(error);
+  }
+});
 
 module.exports = employeeRoute;
